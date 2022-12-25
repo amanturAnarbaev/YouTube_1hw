@@ -1,12 +1,11 @@
 package com.example.youtube.base.ui.detail.playlist
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.youtube.base.BaseViewModel
 import com.example.youtube.data.ApiService
-import com.example.youtube.data.remote.RetroftClient
+import com.example.youtube.data.remote.RetrofitClient
 import com.example.youtube.model.Playlist
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,7 +13,7 @@ import retrofit2.Response
 
 class PlayListViewModel : BaseViewModel() {
     private val apiService: ApiService by lazy {
-        RetroftClient.create()
+        RetrofitClient.create()
     }
 
     fun getPlayList():LiveData<Playlist>{

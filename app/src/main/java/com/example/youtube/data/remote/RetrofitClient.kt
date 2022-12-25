@@ -4,12 +4,11 @@ import com.example.youtube.BuildConfig
 import com.example.youtube.data.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetroftClient {
+class RetrofitClient {
 
     companion object {
         fun create(): ApiService {

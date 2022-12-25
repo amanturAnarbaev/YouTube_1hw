@@ -10,30 +10,27 @@ import com.example.youtube.base.ui.detail.playlist.PlayListFragment
 import com.example.youtube.base.ui.detail.playlist.PlayListViewModel
 import com.example.youtube.databinding.FragmentDetailBinding
 
-class DetailFragment:BaseFragment<FragmentDetailBinding,PlayListViewModel>() {
+class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
+
+    override val viewModel: DetailViewModel by lazy {
+        ViewModelProvider(this)[DetailViewModel::class.java]
+    }
+
     override fun inflateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentDetailBinding {
-        return FragmentDetailBinding.inflate(inflater,container,false)
+        return FragmentDetailBinding.inflate(inflater, container, false)
 
     }
 
 
-
-
-    override fun initListener() {
-        super.initListener()
-    }
     override fun initView() {
+        val id = arguments?.getString("id ")
+        viewModel.getPlayListItems(id.toString()).observe(viewLifecycleOwner) {
+            Log.e("ololo", "initView:$it")
+        }
     }
 
-    override fun initViewModel() {
-        super.initViewModel()
-        Log.e("ololo", "kflmweone")
-    }
 
-    override val viewModel: PlayListViewModel by lazy {
-        ViewModelProvider(this)[PlayListViewModel::class.java]
-    }
 }

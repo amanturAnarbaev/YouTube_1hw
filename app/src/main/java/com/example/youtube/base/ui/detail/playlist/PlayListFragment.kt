@@ -1,41 +1,51 @@
 package com.example.youtube.base.ui.detail.playlist
 
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import com.example.youtube.BuildConfig.BASE_URL
+import androidx.navigation.fragment.findNavController
+import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
+import com.example.youtube.base.ui.detail.playlist.Adapter.PlaylistAdapter
 import com.example.youtube.databinding.FragmentPlayListBinding
 
 
 class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel>() {
 
-    override val viewModel: PlayListViewModel by lazy {
-        ViewModelProvider(this)[PlayListViewModel::class.java]
+    private  val adapter: PlaylistAdapter by lazy {
+        PlaylistAdapter(this::onClick)
     }
 
+    override val viewModel: PlayListViewModel by lazy {
+        ViewModelProvider(this) [PlayListViewModel::class.java]
+    }
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentPlayListBinding {
-        return FragmentPlayListBinding.inflate(inflater, container, false)
+        return  FragmentPlayListBinding.inflate(inflater, container, false)
     }
 
     override fun initView() {
-        TODO("Not yet implemented")
+
     }
 
     override fun initViewModel() {
         super.initViewModel()
-        viewModel.getPlayList().observe(viewLifecycleOwner) {
-            Log.e("ololo", "initViewModel " + it)
+        viewModel.getPlayList().observe(viewLifecycleOwner){
+            Log.e("ololo", "initViewModel: $it")
+            adapter.addData(it.items)
         }
+        binding.recyclerPlayList.adapter= adapter
     }
+
+    private fun onClick(id:String){
+        findNavController().navigate(R.id.detailFragment, bundleOf("id" to id))
+    }
+
 
 
 }
