@@ -8,12 +8,12 @@
 
     <fragment
         android:id="@+id/playListFragment"
-        android:name="com.example.youtube.base.ui.detail.playlist.PlayListFragment"
+        android:name="com.example.youtube.ui.detail.playlist.PlayListFragment"
         android:label="fragment_play_list"
         tools:layout="@layout/fragment_play_list" />
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.youtube.base.ui.detail.detail1.DetailFragment"
+        android:name="com.example.youtube.ui.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" />
 </navigation>

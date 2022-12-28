@@ -1,4 +1,4 @@
-package com.example.youtube.base.ui.detail.playlist.Adapter
+package com.example.youtube.ui.detail.playlist.Adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

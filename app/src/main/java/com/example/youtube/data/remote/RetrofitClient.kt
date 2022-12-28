@@ -1,7 +1,6 @@
 package com.example.youtube.data.remote
 
 import com.example.youtube.BuildConfig
-import com.example.youtube.data.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
