@@ -1,4 +1,4 @@
-package com.example.youtube.ui.detail.playlist
+package com.example.youtube.playlist
 
 
 import androidx.lifecycle.LiveData

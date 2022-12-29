@@ -23,7 +23,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
 
     override fun initView() {
-        val id = arguments?.getString("id ")
+        val id = arguments?.getString("id")
         viewModel.getPlaylistItem(id.toString()).observe(viewLifecycleOwner) {
             Log.e("ololo", "initView" + it)
         }

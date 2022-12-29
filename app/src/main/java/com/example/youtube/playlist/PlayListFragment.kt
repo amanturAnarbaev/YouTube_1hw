@@ -1,4 +1,4 @@
-package com.example.youtube.ui.detail.playlist
+package com.example.youtube.playlist
 
 import android.os.Build
 import android.util.Log
@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.youtube.App
 import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
-import com.example.youtube.ui.detail.playlist.Adapter.PlaylistAdapter
+import com.example.youtube.playlist.Adapter.PlaylistAdapter
 import com.example.youtube.databinding.FragmentPlayListBinding
 import com.example.youtube.network.Status
 import com.example.youtube.utils.isOnline
@@ -40,9 +40,6 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
     }
 
 
-
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun initListener() {
         super.initListener()
@@ -54,17 +51,25 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
     override fun initViewModel() {
         super.initViewModel()
 
-        viewModel.getPlaylist.observe(viewLifecycleOwner){
-            if(it.status==Status.SUCCESS){
-                adapter.addData(it.data?.items)
-            }
+        viewModel.getPlaylist.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    viewModel.loading.value=false
+                    adapter.addData(it.data?.items)
+                }
+                Status.LOADING -> {
+                    viewModel.loading.value = true
+                }
+                Status.ERROR -> {
+                    Log.e("ololo", "initView" + it.msg)
+                }
 
-            else{
-                Log.e("ololo", "initViewModel"+it.msg)
             }
-            binding.recyclerPlayList.adapter=adapter
-
         }
+        viewModel.loading.observe(viewLifecycleOwner){
+            binding.progressBar.isVisible=true
+        }
+        binding.recyclerPlayList.adapter = adapter
     }
 
     private fun onClick(id: String) {
@@ -78,6 +83,8 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
         binding.noInternetContainer.isVisible = !onLine
 
     }
+
+
 }
 
 
