@@ -9,7 +9,7 @@ import com.example.youtube.model.Item
 import com.example.youtube.utils.loadImage
 
 
-class PlaylistAdapter(private val onClick: (String) -> Unit) :
+class   PlaylistAdapter(private val onClick: (String) -> Unit) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
     private val data: ArrayList<Item> = arrayListOf()
@@ -52,7 +52,6 @@ class PlaylistAdapter(private val onClick: (String) -> Unit) :
             itemView.setOnClickListener {
                 onClick(item.id.toString())
             }
-
             val count = item.contentDetails?.itemCount
             val data = item.snippet?.channelTitle
             val nameOfPlaylist = item.snippet?.title

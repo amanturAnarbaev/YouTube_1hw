@@ -54,20 +54,20 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
         viewModel.getPlaylist.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    viewModel.loading.value=false
+                    viewModel.loading.value = false
                     adapter.addData(it.data?.items)
                 }
                 Status.LOADING -> {
                     viewModel.loading.value = true
                 }
                 Status.ERROR -> {
-                    Log.e("ololo", "initView" + it.msg)
+                    viewModel.loading.value = false
                 }
 
             }
         }
-        viewModel.loading.observe(viewLifecycleOwner){
-            binding.progressBar.isVisible=true
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = it
         }
         binding.recyclerPlayList.adapter = adapter
     }
