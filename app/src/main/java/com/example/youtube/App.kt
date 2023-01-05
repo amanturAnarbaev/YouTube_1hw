@@ -9,7 +9,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         db = Room.databaseBuilder(applicationContext, AppADataBase::class.java, "playlist.db")
-            .allowMainThreadQueries()
             .build()
     }
 

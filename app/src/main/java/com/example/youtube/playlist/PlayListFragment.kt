@@ -9,12 +9,11 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.youtube.App
 import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
-import com.example.youtube.playlist.Adapter.PlaylistAdapter
 import com.example.youtube.databinding.FragmentPlayListBinding
 import com.example.youtube.network.Status
+import com.example.youtube.playlist.Adapter.PlaylistAdapter
 import com.example.youtube.utils.isOnline
 
 
@@ -29,8 +28,7 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
     }
 
     override fun inflateViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
+        inflater: LayoutInflater, container: ViewGroup?
     ): FragmentPlayListBinding {
         return FragmentPlayListBinding.inflate(inflater, container, false)
     }
@@ -50,12 +48,35 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
 
     override fun initViewModel() {
         super.initViewModel()
+        //local data
 
+        viewModel.getPlaylistDB.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    viewModel.loading.value = false
+                    adapter.addData(it.data?.items)
+                }
+                Status.LOADING -> {
+                    viewModel.loading.value = true
+                }
+                Status.ERROR -> {
+                    viewModel.loading.value = false
+                }
+
+            }
+        }
+
+        viewModel.getPlaylistDB.observe(viewLifecycleOwner){
+            Log.e("ololo","setPlaylist: $it")
+        }
+
+        //remote  data
         viewModel.getPlaylist.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     viewModel.loading.value = false
                     adapter.addData(it.data?.items)
+                    it.data?.let { it1 -> viewModel.setPlaylistDB(it1) }
                 }
                 Status.LOADING -> {
                     viewModel.loading.value = true
