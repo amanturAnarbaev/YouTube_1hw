@@ -9,8 +9,8 @@ import com.example.youtube.data.remote.Repository
 import com.example.youtube.model.Playlist
 import com.example.youtube.network.Resource
 
-class PlayListViewModel : BaseViewModel() {
-    private val repo = Repository()
+class PlayListViewModel(private val repo:Repository) : BaseViewModel() {
+
 
     val setPlaylistLiveData = MutableLiveData<Playlist>()
 

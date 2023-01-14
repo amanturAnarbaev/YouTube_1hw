@@ -1,19 +1,26 @@
 package com.example.youtube.ui.detail
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.databinding.FragmentDetailBinding
+import com.example.youtube.model.Item
 import com.example.youtube.network.Status
+import com.example.youtube.playlist.Adapter.PlaylistAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
-    override val viewModel: DetailViewModel by lazy {
-        ViewModelProvider(this)[DetailViewModel::class.java]
+
+    private val adapter: PlaylistAdapter by lazy {
+        PlaylistAdapter(this::onClick)
     }
+
+    override val viewModel: DetailViewModel by viewModel()
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -24,13 +31,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
-        val id = arguments?.getString("id")
-        viewModel.getPlaylistItem(id.toString()).observe(viewLifecycleOwner) {
+        val item = arguments?.getSerializable("item") as Item
+        viewModel.getPlaylistItem(item.id.toString()).observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     viewModel.loading.value = false
-                    Log.e("ololo","initView"+it.data)
+                    adapter.addData(it.data?.items)
                 }
                 Status.LOADING -> {
                     viewModel.loading.value = true
@@ -43,8 +51,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             viewModel.loading.observe(viewLifecycleOwner) {
                 binding.progresBar.isVisible = it
             }
+            binding.recycler.adapter = adapter
+            binding.description.text = item.snippet?.title
+
+            val count = item.contentDetails?.itemCount
+            binding.amountOfVideos.text = "$count video Series"
+
 
         }
+    }
+
+    private fun onClick(item: Item) {
+
     }
 
 

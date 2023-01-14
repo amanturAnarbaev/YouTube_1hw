@@ -8,10 +8,8 @@ import com.example.youtube.model.Playlist
 import com.example.youtube.network.Resource
 import kotlinx.coroutines.Dispatchers
 
-class Repository {
-    private val apiService: ApiService by lazy {
-        RetrofitClient.create()
-    }
+class Repository(private val apiService: ApiService){
+
 
     fun getPlayList(): LiveData<Resource<Playlist>> = liveData(Dispatchers.IO) {
         emit(Resource.loading())

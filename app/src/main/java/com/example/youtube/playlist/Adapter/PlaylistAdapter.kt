@@ -9,19 +9,18 @@ import com.example.youtube.model.Item
 import com.example.youtube.utils.loadImage
 
 
-class   PlaylistAdapter(private val onClick: (String) -> Unit) :
+class PlaylistAdapter(private val onClick: (Item) -> Unit) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
     private val data: ArrayList<Item> = arrayListOf()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addData(newData: List<Item>?) {
         data.clear()
         if (newData != null) {
             data.addAll(newData)
         }
         notifyDataSetChanged()
-
-
     }
 
 
@@ -50,11 +49,12 @@ class   PlaylistAdapter(private val onClick: (String) -> Unit) :
         fun bind(item: Item) {
 
             itemView.setOnClickListener {
-                onClick(item.id.toString())
+                onClick(item)
             }
-            val count = item.contentDetails?.itemCount
+
             val data = item.snippet?.channelTitle
             val nameOfPlaylist = item.snippet?.title
+            val count = item.contentDetails?.itemCount
             binding.tvVideoCount.text = "$count video Series"
             binding.tvName.text = data.toString()
             binding.data.text = nameOfPlaylist.toString()

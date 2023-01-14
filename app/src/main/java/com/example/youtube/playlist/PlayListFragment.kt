@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.databinding.FragmentPlayListBinding
+import com.example.youtube.model.Item
 import com.example.youtube.network.Status
 import com.example.youtube.playlist.Adapter.PlaylistAdapter
 import com.example.youtube.utils.isOnline
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel>() {
@@ -23,9 +25,7 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
         PlaylistAdapter(this::onClick)
     }
 
-    override val viewModel: PlayListViewModel by lazy {
-        ViewModelProvider(this)[PlayListViewModel::class.java]
-    }
+    override val viewModel: PlayListViewModel by viewModel()
 
     override fun inflateViewBinding(
         inflater: LayoutInflater, container: ViewGroup?
@@ -66,8 +66,8 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
             }
         }
 
-        viewModel.getPlaylistDB.observe(viewLifecycleOwner){
-            Log.e("ololo","setPlaylist: $it")
+        viewModel.getPlaylistDB.observe(viewLifecycleOwner) {
+            Log.e("ololo", "setPlaylist: $it")
         }
 
         //remote  data
@@ -93,8 +93,8 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding, PlayListViewModel
         binding.recyclerPlayList.adapter = adapter
     }
 
-    private fun onClick(id: String) {
-        findNavController().navigate(R.id.detailFragment, bundleOf("id" to id))
+    private fun onClick(item: Item) {
+        findNavController().navigate(R.id.detailFragment, bundleOf("item" to item))
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
